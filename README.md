@@ -9,3 +9,6 @@ This project requires creation an asynchronous web app that uses Web API and use
 3. Got API Creditentions from OpenWeatherMap and assigned it const
 4. Created async functions to fetch data from weather api and store on local server
 5. Updated UI dynamically with a function. 
+
+## To Run this app
+Download the zip file and run terminal. Enter node server.js
