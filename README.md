@@ -11,4 +11,4 @@ This project requires creation an asynchronous web app that uses Web API and use
 5. Updated UI dynamically with a function. 
 
 ## To Run this app
-Download the zip file and run terminal. Enter node server.js
+Download the zip file and run the folder terminal on VS Code. Enter node server.js
