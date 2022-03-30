@@ -3,14 +3,14 @@ const generateBtn  = document.getElementById('generate');
 
 //URL and API Key
 const api_Url = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const api_Key = '&appid=445c27ec773ab48010ecb6b75afb8e71&units=imperial';
+const api_Key = '&appid=445c27ec773ab48010ecb6b75afb8e71&units=Imperial';
 
 // Create a new date instance dynamically with JS
 let d = new Date();
 let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 
 
-//event listener for dom element with click and callback back function. 
+//event listener for dom element with click and callback back function.
 generateBtn.addEventListener('click', performAPICall);
 
 function performAPICall(e){
@@ -31,7 +31,7 @@ function performAPICall(e){
     }
     weatherAPICall(api_Url, zipCode, api_Key).then(function(userData){
             //add data to POST
-            postData('/add', { date: newDate, temp: userData.main.temp, content})
+            postData('/add', { date: newDate, temp: userData.main.temp, min: userData.main.temp_min, max: userData.main.temp_max, content, name:userData.name})
         }).then(function(newData){
             //call updateUI function
             updateUI();
@@ -47,9 +47,12 @@ const postData = async (url = '', data  ={}) =>{
             "Content-Type": "application/json;charset=UTF-8"
         },
         body: JSON.stringify({
-            date: data.date,
-            temp: data.temp,
-            content: data.content
+          date: data.date,
+          temp: data.temp,
+          content: data.content,
+          name: data.name,
+          min: data.min,
+          max: data.max
         })
     })
     try{
@@ -67,6 +70,9 @@ const updateUI = async () => {
         document.getElementById('date').innerHTML = allData.date;
         document.getElementById('temp').innerHTML = allData.temp+" deg F";
         document.getElementById('content').innerHTML = "I recorded how I was feeling: "+ allData.content;
+        document.getElementById('temp_min').innerHTML = `current min temp is ${allData.min} deg F`;
+        document.getElementById('temp_max').innerHTML = `current max temp is ${allData.max} deg F`;
+        document.getElementById('city').innerHTML = `City:\n${allData.name}`;
     }
     catch(error){
         console.log("ERROR03: Issue found in updateUI funciton", error);

@@ -25,10 +25,13 @@ const data = [];
 app.post('/add', addInfo);
 
 function addInfo(req, res) {
-    projectData['date'] = req.body.date;
-    projectData['temp'] = req.body.temp;
-    projectData['content'] = req.body.content;
-    res.send(projectData);
+  projectData['date'] = req.body.date;
+  projectData['temp'] = req.body.temp;
+  projectData['name'] =req.body.name;
+  projectData['min'] = req.body.min;
+  projectData['max'] = req.body.max;
+  projectData['content'] = req.body.content;
+  res.send(projectData);
 };
 
 //Callback function to complete GET '/all'
