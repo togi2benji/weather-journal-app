@@ -30,7 +30,8 @@ function addInfo(req, res) {
   projectData['name'] =req.body.name;
   projectData['min'] = req.body.min;
   projectData['max'] = req.body.max;
-  projectData['content'] = req.body.content;
+//   projectData['content'] = req.body.content;
+  projectData['icon'] = req.body.icon;
   res.send(projectData);
 };
 

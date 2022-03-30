@@ -5,6 +5,7 @@ const generateBtn  = document.getElementById('generate');
 const api_Url = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 const api_Key = '&appid=445c27ec773ab48010ecb6b75afb8e71&units=Imperial';
 
+
 // Create a new date instance dynamically with JS
 let d = new Date();
 let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
@@ -17,8 +18,7 @@ function performAPICall(e){
     e.preventDefault();
 
     const zipCode = document.getElementById('zip').value;
-    const content = document.getElementById('feelings').value;
-
+ 
     //This function is used to GET Web API data
     const weatherAPICall = async (api_Url, zipCode, api_Key) =>{
         const res = await fetch(api_Url + zipCode + api_Key);
@@ -31,7 +31,8 @@ function performAPICall(e){
     }
     weatherAPICall(api_Url, zipCode, api_Key).then(function(userData){
             //add data to POST
-            postData('/add', { date: newDate, temp: userData.main.temp, min: userData.main.temp_min, max: userData.main.temp_max, content, name:userData.name})
+            console.log(userData);
+            postData('/add', { date: newDate, icon: userData.weather[0].icon, temp: userData.main.temp, min: userData.main.temp_min, max: userData.main.temp_max, name:userData.name})
         }).then(function(newData){
             //call updateUI function
             updateUI();
@@ -49,14 +50,16 @@ const postData = async (url = '', data  ={}) =>{
         body: JSON.stringify({
           date: data.date,
           temp: data.temp,
-          content: data.content,
+        //   content: data.content,
           name: data.name,
           min: data.min,
+          icon: data.icon,
           max: data.max
         })
     })
     try{
         const newData = await response.json();
+        console.log(newData);
         return newData;
     }catch (error){
         console.log("ERROR02: postData function failed to stringify data", error);
@@ -68,11 +71,12 @@ const updateUI = async () => {
     try{
         const allData = await request.json()
         document.getElementById('date').innerHTML = allData.date;
-        document.getElementById('temp').innerHTML = allData.temp+" deg F";
-        document.getElementById('content').innerHTML = "I recorded how I was feeling: "+ allData.content;
-        document.getElementById('temp_min').innerHTML = `current min temp is ${allData.min} deg F`;
-        document.getElementById('temp_max').innerHTML = `current max temp is ${allData.max} deg F`;
-        document.getElementById('city').innerHTML = `City:\n${allData.name}`;
+        document.getElementById('temp').innerHTML = `CURRENT TEMP: ${allData.temp} degF`;
+        // document.getElementById('content').innerHTML = "I recorded how I was feeling: "+ allData.content;
+        document.getElementById('temp_min').innerHTML = `MIN. TEMP: ${allData.min} degF`;
+        document.getElementById('temp_max').innerHTML = `MAX. TEMP: ${allData.max} degF`;
+        document.getElementById('city').innerHTML = `City: ${allData.name}`;
+        document.getElementById('icon').innerHTML = `<img src="http://openweathermap.org/img/wn/${allData.icon}@2x.png">`;
     }
     catch(error){
         console.log("ERROR03: Issue found in updateUI funciton", error);
